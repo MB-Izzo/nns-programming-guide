@@ -1,0 +1,15 @@
+---
+import { getCollection } from "astro:content"
+import PageLayout from "../layouts/PageLayout.astro";
+const allPosts = await getCollection("posts");
+---
+
+<PageLayout>
+    <div class="pt-4">
+        <a href="/" class="mt-4">Retourner à la page d'acceuil</a>
+    </div>
+    <h1 class="text-3xl md:text-4xl py-4">Apprendre le C#.</h1>
+    <ul class="leading-8 text-lg">
+        {allPosts.map((post) => <li><a href={`/posts/${post.slug}/`}>{post.data.title}</a></li>)}
+    </ul>
+</PageLayout>

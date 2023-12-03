@@ -1,0 +1,32 @@
+---
+/* 
+  This layout is used in 
+  - pages/index.astro
+  - pages/blog.astro
+  - pages/projects.astro
+*/
+
+// Import the global.css file here so that it is included on
+import "../styles/globals.css";
+---
+
+<!DOCTYPE html>
+<html class="mytheme dark" lang="en">
+  <head>
+    <!-- Global Metadata -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+<!--    <slot name="meta" /> -->
+  </head>
+
+  <body
+    class="min-h-screen max-w-4xl mx-auto px-6 sm:px-8"
+  >
+    <main id="main">
+      <slot />
+    </main>
+    <style>
+    </style>
+  </body>
+</html>
+

@@ -1,0 +1,101 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+// import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
+
+export async function getStaticPaths() {
+  const sortByDate = (a, b) => { return new Date(b.data.date) - new Date(a.data.date) }
+
+  const blogEntries = await getCollection('posts');
+  const numberOfPosts = blogEntries.length;
+  return blogEntries.sort(sortByDate).map((entry, i) => ({
+    params: { slug: entry.slug }, 
+    props: { 
+        entry,
+        prevPost: 
+            i + 1 === numberOfPosts 
+            ? null
+            : blogEntries[i + 1],
+        nextPost: 
+            i === 0 
+            ? null
+            : blogEntries[i - 1],
+
+    },
+  }));
+}
+
+const { entry, prevPost, nextPost } = Astro.props;
+const { Content } = await entry.render();
+
+---
+
+<PageLayout>
+    <div class="pt-4">
+        <a href="/csharpindex" class="mt-4">Retourner à l'index</a>
+    </div>
+    <section class="content prose prose-mytheme max-w-none pb-10 pt-6">
+        <Content />
+    </section>
+    <div class="flex justify-between pb-12 text-lg">
+        {prevPost && <a href={`/posts/${prevPost.slug}/`} class="inline p-3">Précedent: {prevPost.data.title}</a>}
+        {nextPost && <a href={`/posts/${nextPost.slug}/`} class="inline p-3">Suivant: {nextPost.data.title}</a>}
+    </div>
+    
+</PageLayout>
+
+<style is:global>
+  .content pre > code {
+       display: grid; /*  this is way the line will span whole width of `code` component */
+    }
+
+    .content [data-rehype-pretty-code-fragment]{
+        position: relative;
+    }
+
+    .content [data-rehype-pretty-code-title] {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        background-color: rgba(205, 95, 42, 0.8);
+        color: rgba(var(--color-text-body));
+        padding: 0.5rem 1rem;
+    }
+
+    .content pre > code [data-line] {
+        border-left: 0.5rem solid transparent;
+        padding: 0 0.5rem;
+    }
+
+    .content pre > code [data-highlighted-line] {
+        background-color: #00240f;
+        border-left: 0.5rem solid green;
+    }
+
+    .content pre > code[data-line-numbers] {
+        counter-reset: line;
+    }
+
+    .content pre > code[data-line-numbers] > [data-line]::before {
+        counter-increment: line;
+        content: counter(line);
+        display: inline-block;
+        margin-right: 1rem;
+        width: 1rem;
+        text-align: left;
+        color: rgba(255, 255, 255, 0.5);;
+    }
+
+    .content pre > code > [data-line]::before {
+        content: "";
+        display: inline-block;
+        text-align: right;
+    }
+ 
+    .content pre > code[data-line-numbers-max-digits="2"] > [data-line]::before {
+        width: 2rem;
+    }
+ 
+    .content code[data-line-numbers-max-digits="3"] > [data-line]::before {
+        width: 3rem;
+    }
+</style>
