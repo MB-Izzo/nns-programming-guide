@@ -4,7 +4,7 @@ import PageLayout from '../../layouts/PageLayout.astro';
 // import MarkdownPostLayout from '../../layouts/MarkdownPostLayout.astro';
 
 export async function getStaticPaths() {
-  const sortByDate = (a: any, b: any) => { return new Date(b.data.date) - new Date(a.data.date) }
+  const sortByDate = (a: any, b: any) => { return new Date(b.data.date).getTime() - new Date(a.data.date).getTime() }
 
   const blogEntries = await getCollection('posts');
   const numberOfPosts = blogEntries.length;
