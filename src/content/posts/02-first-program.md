@@ -44,6 +44,8 @@ string brand = "Nike";
 
 Super ! Maintenant, notre programme stock des données... mais que faire avec ?
 
+# Manipuler les variables
+
 Et bien d'abord, on pourrait changer la valeur de cette variable après l'avoir 
 déclarée. On appelle cela "assigner une valeur":
 
@@ -54,19 +56,53 @@ hatPrice = 80;
 Ici, pas besoin d'indiquer le type, c'est seulement à la déclaration de la variable
 que l'on a besoin de faire cela !
 
+Un ordinateur est une calculette... alors on peut aussi faire des calculs !
+
+```csharp title="Program.cs"
+hatPrice = 80 + 50; 
+```
+
+**hatPrice** vaut désormais 130 !
+
+On peut également utiliser une autre variable pour faire nos calculs.
+
+```csharp title="Program.cs"
+hatPrice = 80 + 50; 
+int shippingCost = 10;
+
+hatPrice = hatPrice + shippingCost;
+```
+
+Désormais, hatPrice vaut ```"la valeur actuelle de hatPrice" + shippingCost.```
+La valeur actuelle de hatPrice étant 130, on ajoute shippingCost (10) et on
+obtient 140 !
+
 # Les conditions
 
-Imaginons que cette valeur de variable 80 n'ait pas été rentrée par nous même, 
-mais que nous l'avons récupéré dans une base de donnée, et on voudrait que
-notre programme agisse différemment selon son prix...
+Imaginons que cette valeur de variable 140 n'ait pas été rentrée par nous même, 
+et on voudrait que notre programme agisse différemment selon son prix...
 
 **On utiliserait les "conditions" pour cela !**
 
-```csharp title="Program.cs" {6-11} showLineNumbers
+```csharp title="Exemple"
+if (une variable > une autre variable) {
+    // Le code entre { } s'execute uniquement si la condition est vraie.
+}
+else {
+    // Le code ici s'execute uniquement si la condition est fausse.
+}
+```
+
+```csharp title="Program.cs" {11-16} showLineNumbers
 int hatPrice = 100;
 string brand = "Nike";
 
 hatPrice = 80;
+
+hatPrice = 80 + 50; 
+int shippingCost = 10;
+
+hatPrice = hatPrice + shippingCost;
 
 if (hatPrice > 50) {
     // Do something

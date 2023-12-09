@@ -27,8 +27,44 @@ export async function getStaticPaths() {
 
 const { entry, prevPost, nextPost } = Astro.props;
 const { Content } = await entry.render();
-
 ---
+
+<script>
+let copyButtonLabel = "Copy code";
+let codeBlocks = Array.from(document.querySelectorAll("figure"));
+
+for (let cb of codeBlocks) {
+    let wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+
+    let copyButton = document.createElement("button");
+    copyButton.className = "copy-code";
+    copyButton.innerHTML = copyButtonLabel;
+
+    cb.setAttribute("tabindex", "0");
+    cb.appendChild(copyButton);
+
+    cb.parentNode?.insertBefore(wrapper, cb);
+    wrapper.appendChild(cb);
+
+    copyButton.addEventListener("click", async () => {
+        await copyCode(cb, copyButton);
+    });
+}
+
+async function copyCode(block: any, button: any) {
+  let code = block.querySelector("code");
+  let text = code.innerText;
+
+  await navigator.clipboard.writeText(text);
+   button.innerText = "Code Copied";
+
+  setTimeout(() => {
+    button.innerText = copyButtonLabel;
+  }, 700);
+}
+
+</script>
 
 <PageLayout>
     <div class="pt-4">
@@ -62,13 +98,13 @@ const { Content } = await entry.render();
     }
 
     .content pre > code [data-line] {
-        border-left: 0.5rem solid transparent;
-        padding: 0 0.5rem;
+        border-left: 0.3rem solid transparent;
+        padding: 0 0.3rem;
     }
 
     .content pre > code [data-highlighted-line] {
         background-color: #00240f;
-        border-left: 0.5rem solid green;
+        border-left: 0.3rem solid green;
     }
 
     .content pre > code[data-line-numbers] {
@@ -82,7 +118,7 @@ const { Content } = await entry.render();
         margin-right: 1rem;
         width: 1rem;
         text-align: left;
-        color: rgba(255, 255, 255, 0.5);;
+        color: rgba(255, 255, 255, 0.2);
     }
 
     .content pre > code > [data-line]::before {
@@ -92,10 +128,24 @@ const { Content } = await entry.render();
     }
  
     .content pre > code[data-line-numbers-max-digits="2"] > [data-line]::before {
-        width: 2rem;
+        width: 0.6rem;
     }
  
     .content code[data-line-numbers-max-digits="3"] > [data-line]::before {
-        width: 3rem;
+        width: 2rem;
+    }
+
+    .copy-code {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 0.8rem;
+        padding: 0.43rem 1rem;
+        border-top-right-radius: 0.5rem;
+        background-color: rgba(205, 95, 42, 0.9);
+    }
+
+    .copy-code:hover {
+        background-color: #f2ab37;
     }
 </style>
